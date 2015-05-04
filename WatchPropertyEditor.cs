@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
+﻿// Copyright (c) 2015 Bartłomiej Wołk (bartlomiejwolk@gmail.com)
+//  
+// This file is part of the WatchProperty extension for Unity.
+// Licensed under the MIT license. See LICENSE file in the project root folder.
+
 using System.Reflection;
-using OneDayGame;
+using UnityEditor;
+using UnityEngine;
 
 namespace WatchProperty {
 
