@@ -12,26 +12,6 @@ namespace WatchProperty {
     /// Observe component property and act when value is changed.
     public class WatchProperty : MonoBehaviour {
 
-        /// Triggers on the source component that trigger actions on
-        /// the target component.
-        public enum Triggers {
-
-            Equal,
-            EqualOrLess,
-            LessThan,
-            MoreThan
-
-        }
-
-        /// Actions that can be done to the target component.
-        public enum Actions {
-
-            Enable,
-            Disable,
-            Set
-
-        }
-
         /// Source component.
         ///
         /// Component which property will be used to update
@@ -104,11 +84,11 @@ namespace WatchProperty {
 
         /// Trigger that causes some change in the target component.
         [SerializeField]
-        private Triggers _trigger;
+        private Trigger trigger;
 
         /// Action to be performed on the target.
         [SerializeField]
-        private Actions _action;
+        private Action _action;
 
         /// Value of the property that acts as a trigger.
         [SerializeField]
@@ -129,17 +109,17 @@ namespace WatchProperty {
             var sourceValue = _sourcePropInfo.GetValue(_sourceCo, null);
 
             // Handle trigger option.
-            switch (_trigger) {
-                case Triggers.Equal:
+            switch (trigger) {
+                case Trigger.Equal:
                     HandleEqual(sourceValue, sourceType);
                     break;
-                case Triggers.EqualOrLess:
+                case Trigger.EqualOrLess:
                     HandleEqualOrLess(sourceValue, sourceType);
                     break;
-                case Triggers.LessThan:
+                case Trigger.LessThan:
                     HandleLessThan(sourceValue, sourceType);
                     break;
-                case Triggers.MoreThan:
+                case Trigger.MoreThan:
                     HandleMoreThan(sourceValue, sourceType);
                     break;
             }

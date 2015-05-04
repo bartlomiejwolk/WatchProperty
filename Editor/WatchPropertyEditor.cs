@@ -76,15 +76,15 @@ namespace WatchProperty {
             // Action dropdown
             switch (_action.enumValueIndex) {
                 // Action "Enable".
-                case (int) WatchProperty.Actions.Enable:
+                case (int) Action.Enable:
                     // Display fields for target object.
                     EditorGUILayout.PropertyField(_targetCo);
                     break;
                 // Action "Disable".
-                case (int) WatchProperty.Actions.Disable:
+                case (int) Action.Disable:
                     break;
                 // Action "Set".
-                case (int) WatchProperty.Actions.Set:
+                case (int) Action.Set:
                     // Display field for target game object.
                     EditorGUILayout.PropertyField(_targetCo);
 
