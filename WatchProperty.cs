@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2015 Bartłomiej Wołk (bartlomiejwolk@gmail.com)
-//  
-// This file is part of the WatchProperty extension for Unity.
-// Licensed under the MIT license. See LICENSE file in the project root folder.
+// 
+// This file is part of the WatchProperty extension for Unity. Licensed under
+// the MIT license. See LICENSE file in the project root folder.
 
 using System;
 using System.Reflection;
@@ -11,80 +11,7 @@ namespace WatchProperty {
 
     /// Observe component property and act when value is changed.
     public class WatchProperty : MonoBehaviour {
-
-        /// Source component.
-        ///
-        /// Component which property will be used to update
-        /// target game object.
-        [SerializeField]
-        private Component _sourceCo;
-
-        public Component SourceCo {
-            get { return _sourceCo; }
-            set { _sourceCo = value; }
-        }
-
-        /// Target component.
-        ///
-        /// Component which property will be updated by
-        /// target game object's property.
-        [SerializeField]
-        private Component _targetCo;
-
-        public Component TargetCo {
-            get { return _targetCo; }
-            set { _targetCo = value; }
-        }
-
-        /// Name of the selected source game object property.
-        [SerializeField]
-        private string _sourcePropName;
-
-        public string SourcePropName {
-            get { return _sourcePropName; }
-            set { _sourcePropName = value; }
-        }
-
-        /// Name of the selected target game object selected property.
-        // TODO This shouldn't be serialized.
-        [SerializeField]
-        private string _targetPropName;
-
-        public string TargetPropName {
-            get { return _targetPropName; }
-            set { _targetPropName = value; }
-        }
-
-        /// Index of the source property in the property array.
-        ///
-        /// Property array contains names of all properties
-        /// found in the source game object.
-        [SerializeField]
-        private int _sourcePropIndex = 0;
-
-        public int SourcePropIndex {
-            get { return _sourcePropIndex; }
-            set { _sourcePropIndex = value; }
-        }
-
-        /// Index of the target property in the property array.
-        ///
-        /// Property array contains names of all properties
-        /// found in the target game object.
-        [SerializeField]
-        private int _targetPropIndex = 0;
-
-        public int TargetPropIndex {
-            get { return _targetPropIndex; }
-            set { _targetPropIndex = value; }
-        }
-
-        /// Metadata of the selected source property.
-        private PropertyInfo _sourcePropInfo;
-
-        /// Trigger that causes some change in the target component.
-        [SerializeField]
-        private Trigger _trigger;
+        #region FIELDS
 
         /// Action to be performed on the target.
         [SerializeField]
@@ -93,6 +20,87 @@ namespace WatchProperty {
         /// Value of the property that acts as a trigger.
         [SerializeField]
         private float _conditionValue;
+
+        /// Source component.
+        /// 
+        /// Component which property will be used to update target game object.
+        [SerializeField]
+        private Component _sourceCo;
+
+        /// Index of the source property in the property array.
+        /// 
+        /// Property array contains names of all properties found in the source
+        /// game object.
+        [SerializeField]
+        private int _sourcePropIndex;
+
+        /// Metadata of the selected source property.
+        private PropertyInfo _sourcePropInfo;
+
+        /// Name of the selected source game object property.
+        [SerializeField]
+        private string _sourcePropName;
+
+        /// Target component.
+        /// 
+        /// Component which property will be updated by target game object's
+        /// property.
+        [SerializeField]
+        private Component _targetCo;
+
+        /// Index of the target property in the property array.
+        /// 
+        /// Property array contains names of all properties found in the target
+        /// game object.
+        [SerializeField]
+        private int _targetPropIndex;
+
+        /// Name of the selected target game object selected property.
+        // TODO This shouldn't be serialized.
+        [SerializeField]
+        private string _targetPropName;
+
+        /// Trigger that causes some change in the target component.
+        [SerializeField]
+        private Trigger _trigger;
+
+        #endregion FIELDS
+
+        #region PROPERTIES
+
+        public Component SourceCo {
+            get { return _sourceCo; }
+            set { _sourceCo = value; }
+        }
+
+        public int SourcePropIndex {
+            get { return _sourcePropIndex; }
+            set { _sourcePropIndex = value; }
+        }
+
+        public string SourcePropName {
+            get { return _sourcePropName; }
+            set { _sourcePropName = value; }
+        }
+
+        public Component TargetCo {
+            get { return _targetCo; }
+            set { _targetCo = value; }
+        }
+
+        public int TargetPropIndex {
+            get { return _targetPropIndex; }
+            set { _targetPropIndex = value; }
+        }
+
+        public string TargetPropName {
+            get { return _targetPropName; }
+            set { _targetPropName = value; }
+        }
+
+        #endregion PROPERTIES
+
+        #region UNITY MESSAGES
 
         private void Awake() {
             // Initialize class fields.
@@ -113,16 +121,27 @@ namespace WatchProperty {
                 case Trigger.Equal:
                     HandleEqual(sourceValue, sourceType);
                     break;
+
                 case Trigger.EqualOrLess:
                     HandleEqualOrLess(sourceValue, sourceType);
                     break;
+
                 case Trigger.LessThan:
                     HandleLessThan(sourceValue, sourceType);
                     break;
+
                 case Trigger.MoreThan:
                     HandleMoreThan(sourceValue, sourceType);
                     break;
             }
+        }
+
+        #endregion UNITY MESSAGES
+
+        #region METHODS
+
+        private void HandleEnableAction() {
+            _targetCo.gameObject.SetActive(true);
         }
 
         /// Handle 'Equal' option.
@@ -136,9 +155,10 @@ namespace WatchProperty {
                         HandleEnableAction();
                     }
                     break;
+
                 case "System.Single":
                     var floatValue = (float) sourceValue;
-                    if (floatValue == (float) _conditionValue) {
+                    if (floatValue == _conditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -157,10 +177,11 @@ namespace WatchProperty {
                         HandleEnableAction();
                     }
                     break;
+
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue <= (float) _conditionValue) {
+                    if (floatValue <= _conditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -179,10 +200,11 @@ namespace WatchProperty {
                         HandleEnableAction();
                     }
                     break;
+
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue < (float) _conditionValue) {
+                    if (floatValue < _conditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -201,20 +223,18 @@ namespace WatchProperty {
                         HandleEnableAction();
                     }
                     break;
+
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue > (float) _conditionValue) {
+                    if (floatValue > _conditionValue) {
                         HandleEnableAction();
                     }
                     break;
             }
         }
 
-        private void HandleEnableAction() {
-            _targetCo.gameObject.SetActive(true);
-        }
-
+        #endregion METHODS
     }
 
 }
