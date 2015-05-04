@@ -84,7 +84,7 @@ namespace WatchProperty {
 
         /// Trigger that causes some change in the target component.
         [SerializeField]
-        private Trigger trigger;
+        private Trigger _trigger;
 
         /// Action to be performed on the target.
         [SerializeField]
@@ -109,7 +109,7 @@ namespace WatchProperty {
             var sourceValue = _sourcePropInfo.GetValue(_sourceCo, null);
 
             // Handle trigger option.
-            switch (trigger) {
+            switch (_trigger) {
                 case Trigger.Equal:
                     HandleEqual(sourceValue, sourceType);
                     break;
