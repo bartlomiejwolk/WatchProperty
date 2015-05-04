@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2015 Bartłomiej Wołk (bartlomiejwolk@gmail.com)
-//  
-// This file is part of the WatchProperty extension for Unity.
-// Licensed under the MIT license. See LICENSE file in the project root folder.
+// 
+// This file is part of the WatchProperty extension for Unity. Licensed under
+// the MIT license. See LICENSE file in the project root folder.
 
 using System.Reflection;
 using UnityEditor;
@@ -11,34 +11,29 @@ namespace WatchProperty {
 
     [CustomEditor(typeof (WatchProperty))]
     public class WatchPropertyEditor : Editor {
-
-#region PROPERTIES
-        
+        #region PROPERTIES
 
         private PropertyInfo[] _sourceProperties;
         private PropertyInfo[] _targetProperties;
-#endregion
-#region SERIALIZED PROPERTIES
+
+        #endregion PROPERTIES
+
+        #region SERIALIZED PROPERTIES
+
+        private SerializedProperty _action;
+        private SerializedProperty _conditionValue;
         private SerializedProperty _sourceCo;
         private SerializedProperty _targetCo;
         private SerializedProperty _trigger;
-        private SerializedProperty _action;
-        private SerializedProperty _conditionValue;
-#endregion
 
-#region UNITY MESSAGES
+        #endregion SERIALIZED PROPERTIES
 
-        private void OnEnable() {
-            _sourceCo = serializedObject.FindProperty("_sourceCo");
-            _targetCo = serializedObject.FindProperty("_targetCo");
-            _trigger = serializedObject.FindProperty("_trigger");
-            _action = serializedObject.FindProperty("_action");
-            _conditionValue = serializedObject.FindProperty("_conditionValue");
-        }
+        #region UNITY MESSAGES
 
+        // todo extract methods
         public override void OnInspectorGUI() {
             serializedObject.Update();
-            WatchProperty script = (WatchProperty) target;
+            var script = (WatchProperty) target;
 
             // Display fields for game object.
             EditorGUILayout.PropertyField(_sourceCo);
@@ -52,7 +47,7 @@ namespace WatchProperty {
                 // Initialize array.
                 sourcePropNames = new string[_sourceProperties.Length];
                 // Fill array with property names.
-                for (int i = 0; i < _sourceProperties.Length; i++) {
+                for (var i = 0; i < _sourceProperties.Length; i++) {
                     sourcePropNames[i] = _sourceProperties[i].Name;
                 }
                 // Display dropdown component property list.
@@ -93,8 +88,8 @@ namespace WatchProperty {
                     // Display field for target game object.
                     EditorGUILayout.PropertyField(_targetCo);
 
-                    // TODO Create method with args.
-                    // Component properties by name.
+                    // TODO Create method with args. Component properties by
+                    // name.
                     string[] targetPropNames;
                     // Find component properties.
                     if (script.TargetCo) {
@@ -105,7 +100,7 @@ namespace WatchProperty {
                         //BindingFlags.NonPublic);
                         // Initialize array.
                         targetPropNames = new string[_targetProperties.Length];
-                        for (int i = 0; i < _targetProperties.Length; i++) {
+                        for (var i = 0; i < _targetProperties.Length; i++) {
                             targetPropNames[i] = _targetProperties[i].Name;
                         }
                         // Display dropdown component property list.
@@ -127,8 +122,15 @@ namespace WatchProperty {
             }
         }
 
-#endregion
+        private void OnEnable() {
+            _sourceCo = serializedObject.FindProperty("_sourceCo");
+            _targetCo = serializedObject.FindProperty("_targetCo");
+            _trigger = serializedObject.FindProperty("_trigger");
+            _action = serializedObject.FindProperty("_action");
+            _conditionValue = serializedObject.FindProperty("_conditionValue");
+        }
 
+        #endregion UNITY MESSAGES
     }
 
 }
