@@ -3,6 +3,8 @@
 This component allows you to observe property in a specified component and take action when property value meets specified
 condition.
 
+Licensed under MIT license. See LICENSE file in the project root.
+
 ![WatchProperty](/Resources/coverart.png?raw=true)
 
 ## Usage
