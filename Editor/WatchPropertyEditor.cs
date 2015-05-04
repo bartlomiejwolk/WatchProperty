@@ -12,16 +12,21 @@ namespace WatchProperty {
     [CustomEditor(typeof (WatchProperty))]
     public class WatchPropertyEditor : Editor {
 
-        /* Serialized properties */
+#region PROPERTIES
+        
+
+        private PropertyInfo[] _sourceProperties;
+        private PropertyInfo[] _targetProperties;
+#endregion
+#region SERIALIZED PROPERTIES
         private SerializedProperty _sourceCo;
         private SerializedProperty _targetCo;
         private SerializedProperty _trigger;
         private SerializedProperty _action;
         private SerializedProperty _conditionValue;
+#endregion
 
-        /* Component properties */
-        private PropertyInfo[] _sourceProperties;
-        private PropertyInfo[] _targetProperties;
+#region UNITY MESSAGES
 
         private void OnEnable() {
             _sourceCo = serializedObject.FindProperty("_sourceCo");
@@ -121,6 +126,8 @@ namespace WatchProperty {
                 EditorUtility.SetDirty(script);
             }
         }
+
+#endregion
 
     }
 
