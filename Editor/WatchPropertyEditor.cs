@@ -7,7 +7,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace WatchProperty {
+namespace WatchPropertyEx {
 
     [CustomEditor(typeof (WatchProperty))]
     public class WatchPropertyEditor : Editor {

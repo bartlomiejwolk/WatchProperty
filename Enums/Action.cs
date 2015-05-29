@@ -1,4 +1,4 @@
-﻿namespace WatchProperty {
+﻿namespace WatchPropertyEx {
 
     /// Actions that can be done to the target component.
     public enum Action {

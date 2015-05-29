@@ -1,4 +1,4 @@
-namespace WatchProperty {
+namespace WatchPropertyEx {
 
     /// Triggers on the source component that trigger actions on
     /// the target component.

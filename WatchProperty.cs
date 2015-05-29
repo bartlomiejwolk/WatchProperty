@@ -7,7 +7,7 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace WatchProperty {
+namespace WatchPropertyEx {
     
     /// Observe component property and act when value is changed.
     // todo move docs to properties

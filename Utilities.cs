@@ -14,7 +14,7 @@ using Debug = UnityEngine.Debug;
 using UnityEditor;
 #endif
 
-namespace WatchProperty {
+namespace WatchPropertyEx {
 
     public static class Utilities {
 
