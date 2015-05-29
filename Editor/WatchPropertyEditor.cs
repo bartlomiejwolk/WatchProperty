@@ -108,8 +108,15 @@ namespace WatchPropertyEx {
         }
 
         private void DrawConditionValueField() {
-            EditorGUIUtility.labelWidth = 100;
-            EditorGUILayout.PropertyField(conditionValue);
+            EditorGUIUtility.labelWidth = 50;
+            EditorGUIUtility.fieldWidth = 20;
+
+            EditorGUILayout.PropertyField(
+                conditionValue,
+                new GUIContent(
+                    "Value",
+                    ""));
+
             EditorGUIUtility.labelWidth = 0;
         }
 
