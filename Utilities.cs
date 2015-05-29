@@ -20,6 +20,7 @@ namespace WatchProperty {
 
         private const float FloatPrecision = 0.0000001f;
 
+        // todo replace with version from github
         /// <summary>
         /// </summary>
         /// <param name="a"></param>

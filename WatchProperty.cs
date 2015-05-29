@@ -10,6 +10,7 @@ using UnityEngine;
 namespace WatchProperty {
 
     /// Observe component property and act when value is changed.
+    // todo move docs to properties
     public class WatchProperty : MonoBehaviour {
         #region FIELDS
 
@@ -98,6 +99,18 @@ namespace WatchProperty {
             set { targetPropName = value; }
         }
 
+        /// Value of the property that acts as a trigger.
+        public float ConditionValue {
+            get { return conditionValue; }
+            set { conditionValue = value; }
+        }
+
+        /// Action to be performed on the target.
+        public Action Action {
+            get { return action; }
+            set { action = value; }
+        }
+
         #endregion PROPERTIES
 
         #region UNITY MESSAGES
@@ -151,14 +164,14 @@ namespace WatchProperty {
                 case "System.Int32":
                     // Keep source value as integer.
                     var intValue = (int) sourceValue;
-                    if (intValue == (int) conditionValue) {
+                    if (intValue == (int) ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
 
                 case "System.Single":
                     var floatValue = (float) sourceValue;
-                    if (floatValue == conditionValue) {
+                    if (floatValue == ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -173,7 +186,7 @@ namespace WatchProperty {
                     // Keep source value as integer.
                     int intValue;
                     intValue = (int) sourceValue;
-                    if (intValue <= (int) conditionValue) {
+                    if (intValue <= (int) ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -181,7 +194,7 @@ namespace WatchProperty {
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue <= conditionValue) {
+                    if (floatValue <= ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -196,7 +209,7 @@ namespace WatchProperty {
                     // Keep source value as integer.
                     int intValue;
                     intValue = (int) sourceValue;
-                    if (intValue < (int) conditionValue) {
+                    if (intValue < (int) ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -204,7 +217,7 @@ namespace WatchProperty {
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue < conditionValue) {
+                    if (floatValue < ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -219,7 +232,7 @@ namespace WatchProperty {
                     // Keep source value as integer.
                     int intValue;
                     intValue = (int) sourceValue;
-                    if (intValue > (int) conditionValue) {
+                    if (intValue > (int) ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
@@ -227,7 +240,7 @@ namespace WatchProperty {
                 case "System.Single":
                     float floatValue;
                     floatValue = (float) sourceValue;
-                    if (floatValue > conditionValue) {
+                    if (floatValue > ConditionValue) {
                         HandleEnableAction();
                     }
                     break;
