@@ -11,6 +11,13 @@ namespace WatchProperty {
 
     [CustomEditor(typeof (WatchProperty))]
     public class WatchPropertyEditor : Editor {
+
+        #region FIELDS
+
+        private WatchProperty Script { get; set; }
+
+        #endregion
+
         #region PROPERTIES
 
         private PropertyInfo[] sourceProperties;
@@ -20,6 +27,7 @@ namespace WatchProperty {
 
         #region SERIALIZED PROPERTIES
 
+        private SerializedProperty description;
         private SerializedProperty action;
         private SerializedProperty conditionValue;
         private SerializedProperty sourceCo;
@@ -33,7 +41,11 @@ namespace WatchProperty {
         // todo extract methods
         public override void OnInspectorGUI() {
             serializedObject.Update();
-            var script = (WatchProperty) target;
+
+            DrawVersionLabel();
+            DrawDescriptionTextArea();
+
+            EditorGUILayout.Space();
 
             // Display fields for game object.
             EditorGUILayout.PropertyField(sourceCo);
@@ -41,9 +53,9 @@ namespace WatchProperty {
             // Component properties by name.
             string[] sourcePropNames;
             // Find component properties in a selected component.
-            if (script.SourceCo) {
+            if (Script.SourceCo) {
                 // Get all properties from source game object.
-                sourceProperties = script.SourceCo.GetType().GetProperties();
+                sourceProperties = Script.SourceCo.GetType().GetProperties();
                 // Initialize array.
                 sourcePropNames = new string[sourceProperties.Length];
                 // Fill array with property names.
@@ -51,13 +63,13 @@ namespace WatchProperty {
                     sourcePropNames[i] = sourceProperties[i].Name;
                 }
                 // Display dropdown component property list.
-                script.SourcePropIndex = EditorGUILayout.Popup(
+                Script.SourcePropIndex = EditorGUILayout.Popup(
                     "Source Property",
-                    script.SourcePropIndex,
+                    Script.SourcePropIndex,
                     sourcePropNames);
 
                 // Save selected property name.
-                script.SourcePropName = sourcePropNames[script.SourcePropIndex];
+                Script.SourcePropName = sourcePropNames[Script.SourcePropIndex];
             }
 
             EditorGUILayout.BeginHorizontal();
@@ -92,8 +104,8 @@ namespace WatchProperty {
                     // name.
                     string[] targetPropNames;
                     // Find component properties.
-                    if (script.TargetCo) {
-                        targetProperties = script.TargetCo.GetType()
+                    if (Script.TargetCo) {
+                        targetProperties = Script.TargetCo.GetType()
                             .GetProperties(
                                 BindingFlags.Public |
                                 BindingFlags.Instance);
@@ -104,13 +116,13 @@ namespace WatchProperty {
                             targetPropNames[i] = targetProperties[i].Name;
                         }
                         // Display dropdown component property list.
-                        script.TargetPropIndex = EditorGUILayout.Popup(
+                        Script.TargetPropIndex = EditorGUILayout.Popup(
                             "Target Property",
-                            script.TargetPropIndex,
+                            Script.TargetPropIndex,
                             targetPropNames);
 
-                        script.TargetPropName =
-                            targetPropNames[script.TargetPropIndex];
+                        Script.TargetPropName =
+                            targetPropNames[Script.TargetPropIndex];
                     }
                     break;
             }
@@ -118,11 +130,14 @@ namespace WatchProperty {
             serializedObject.ApplyModifiedProperties();
             // Save changes
             if (GUI.changed) {
-                EditorUtility.SetDirty(script);
+                EditorUtility.SetDirty(Script);
             }
         }
 
         private void OnEnable() {
+            Script = (WatchProperty) target;
+
+            description = serializedObject.FindProperty("description");
             sourceCo = serializedObject.FindProperty("sourceCo");
             targetCo = serializedObject.FindProperty("targetCo");
             trigger = serializedObject.FindProperty("trigger");
@@ -131,6 +146,34 @@ namespace WatchProperty {
         }
 
         #endregion UNITY MESSAGES
+
+        #region INSPECTOR CONTROLS
+
+        private void DrawVersionLabel() {
+            EditorGUILayout.LabelField(
+                string.Format(
+                    "{0} ({1})",
+                    WatchProperty.Version,
+                    WatchProperty.Extension));
+        }
+
+        private void DrawDescriptionTextArea() {
+            description.stringValue = EditorGUILayout.TextArea(
+                description.stringValue);
+        }
+
+        #endregion INSPECTOR
+
+        #region METHODS
+
+        [MenuItem("Component/WatchProperty")]
+        private static void AddEntryToComponentMenu() {
+            if (Selection.activeGameObject != null) {
+                Selection.activeGameObject.AddComponent(typeof(WatchProperty));
+            }
+        }
+
+        #endregion METHODS
     }
 
 }

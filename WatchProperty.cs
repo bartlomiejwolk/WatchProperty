@@ -8,12 +8,36 @@ using System.Reflection;
 using UnityEngine;
 
 namespace WatchProperty {
-
+    
     /// Observe component property and act when value is changed.
     // todo move docs to properties
     public class WatchProperty : MonoBehaviour {
+
+        #region CONSTANTS
+
+        public const string Version = "v0.1.0";
+        public const string Extension = "WatchProperty";
+
+        #endregion
+        
         #region FIELDS
 
+#pragma warning disable 0414
+        /// <summary>
+        ///     Allows identify component in the scene file when reading it with
+        ///     text editor.
+        /// </summary>
+        [SerializeField]
+        private string componentName = "WatchProperty";
+#pragma warning restore0414
+
+        #endregion
+
+        #region INSPECTOR FIELDS
+
+        [SerializeField]
+        private string description = "Description";
+ 
         /// Action to be performed on the target.
         [SerializeField]
         private Action action;
@@ -109,6 +133,11 @@ namespace WatchProperty {
         public Action Action {
             get { return action; }
             set { action = value; }
+        }
+
+        public string Description {
+            get { return description; }
+            set { description = value; }
         }
 
         #endregion PROPERTIES
