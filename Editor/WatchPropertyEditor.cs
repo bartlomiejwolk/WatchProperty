@@ -47,56 +47,86 @@ namespace WatchPropertyEx {
 
             EditorGUILayout.Space();
 
-            // Display fields for game object.
-            EditorGUILayout.PropertyField(sourceCo);
-
-            // Component properties by name.
-            string[] sourcePropNames;
-            // Find component properties in a selected component.
-            if (Script.SourceCo) {
-                // Get all properties from source game object.
-                sourceProperties = Script.SourceCo.GetType().GetProperties();
-                // Initialize array.
-                sourcePropNames = new string[sourceProperties.Length];
-                // Fill array with property names.
-                for (var i = 0; i < sourceProperties.Length; i++) {
-                    sourcePropNames[i] = sourceProperties[i].Name;
-                }
-                // Display dropdown component property list.
-                Script.SourcePropIndex = EditorGUILayout.Popup(
-                    "Source Property",
-                    Script.SourcePropIndex,
-                    sourcePropNames);
-
-                // Save selected property name.
-                Script.SourcePropName = sourcePropNames[Script.SourcePropIndex];
-            }
+            DrawSourceCoField();
+            HandleDrawSourcePropertyDropdown();
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUIUtility.labelWidth = 50;
-            // Display trigger dropdown field.
-            EditorGUILayout.PropertyField(trigger);
-            EditorGUIUtility.labelWidth = 100;
-            // Display textbox to enter value required by the trigger option.
-            EditorGUILayout.PropertyField(conditionValue);
-            EditorGUIUtility.labelWidth = 0;
+
+            DrawTriggerDropdown();
+            DrawConditionValueField();
+
             EditorGUILayout.EndHorizontal();
 
-            // Display action dropdown field.
-            EditorGUILayout.PropertyField(action);
+            DrawActionDropdown();
+            HandleActionOption();
 
+            serializedObject.ApplyModifiedProperties();
+        }
+        private void OnEnable() {
+            Script = (WatchProperty) target;
+
+            description = serializedObject.FindProperty("description");
+            sourceCo = serializedObject.FindProperty("sourceCo");
+            targetCo = serializedObject.FindProperty("targetCo");
+            trigger = serializedObject.FindProperty("trigger");
+            action = serializedObject.FindProperty("action");
+            conditionValue = serializedObject.FindProperty("conditionValue");
+        }
+
+        #endregion UNITY MESSAGES
+
+        #region INSPECTOR CONTROLS
+        private void HandleDrawSourcePropertyDropdown() {
+            if (!Script.SourceCo) return;
+
+            // Get all properties from source game object.
+            sourceProperties = Script.SourceCo.GetType().GetProperties();
+
+            // Initialize array.
+            var sourcePropNames = new string[sourceProperties.Length];
+
+            // Fill array with property names.
+            for (var i = 0; i < sourceProperties.Length; i++) {
+                sourcePropNames[i] = sourceProperties[i].Name;
+            }
+
+            // Display dropdown component property list.
+            Script.SourcePropIndex = EditorGUILayout.Popup(
+                "Source Property",
+                Script.SourcePropIndex,
+                sourcePropNames);
+
+            // Save selected property name.
+            Script.SourcePropName = sourcePropNames[Script.SourcePropIndex];
+
+        }
+
+        private void DrawTriggerDropdown() {
+            EditorGUIUtility.labelWidth = 50;
+
+            EditorGUILayout.PropertyField(trigger);
+        }
+
+        private void DrawConditionValueField() {
+            EditorGUIUtility.labelWidth = 100;
+            EditorGUILayout.PropertyField(conditionValue);
+            EditorGUIUtility.labelWidth = 0;
+        }
+
+        // todo extract
+        private void HandleActionOption() {
             // Action dropdown
             switch (action.enumValueIndex) {
                 // Action "Enable".
-                case (int) Action.Enable:
+                case (int)Action.Enable:
                     // Display fields for target object.
                     EditorGUILayout.PropertyField(targetCo);
                     break;
                 // Action "Disable".
-                case (int) Action.Disable:
+                case (int)Action.Disable:
                     break;
                 // Action "Set".
-                case (int) Action.Set:
+                case (int)Action.Set:
                     // Display field for target game object.
                     EditorGUILayout.PropertyField(targetCo);
 
@@ -126,28 +156,16 @@ namespace WatchPropertyEx {
                     }
                     break;
             }
-
-            serializedObject.ApplyModifiedProperties();
-            // Save changes
-            if (GUI.changed) {
-                EditorUtility.SetDirty(Script);
-            }
         }
 
-        private void OnEnable() {
-            Script = (WatchProperty) target;
-
-            description = serializedObject.FindProperty("description");
-            sourceCo = serializedObject.FindProperty("sourceCo");
-            targetCo = serializedObject.FindProperty("targetCo");
-            trigger = serializedObject.FindProperty("trigger");
-            action = serializedObject.FindProperty("action");
-            conditionValue = serializedObject.FindProperty("conditionValue");
+        private void DrawActionDropdown() {
+            EditorGUILayout.PropertyField(action);
         }
 
-        #endregion UNITY MESSAGES
+        private void DrawSourceCoField() {
+            EditorGUILayout.PropertyField(sourceCo);
+        }
 
-        #region INSPECTOR CONTROLS
 
         private void DrawVersionLabel() {
             EditorGUILayout.LabelField(
